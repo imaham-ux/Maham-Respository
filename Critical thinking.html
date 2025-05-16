@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kursi Object Identifier</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap');
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #2e3a59;
+    }
+
+    header {
+      width: 100%;
+      background: #ffffffdd;
+      padding: 18px 0;
+      text-align: center;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 34px;
+      margin: 0;
+      color: #44576D;
+    }
+
+    .tagline-container {
+      background: #f9fbfd;
+      padding: 22px 25px;
+      border-radius: 18px;
+      max-width: 460px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 35px;
+      color: #34495e;
+      font-size: 1.1em;
+    }
+
+    .file-btn {
+      display: inline-block;
+      padding: 14px 26px;
+      background: linear-gradient(to right, #6a93cb, #a4b6e8);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1em;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+      transition: all 0.3s ease;
+      font-weight: 700;
+    }
+
+    .file-btn:hover {
+      background: linear-gradient(to right, #5b83c5, #95a8e2);
+      transform: scale(1.05);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .result-container {
+      background: linear-gradient(145deg, #f0f4fa, #ffffff);
+      padding: 28px;
+      border-radius: 22px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.1);
+      animation: fadeIn 1.4s ease;
+      margin-bottom: 50px;
+      color: #34495e;
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: 30px;
+      margin-bottom: 20px;
+      color: #44576D;
+    }
+
+    img {
+      width: 100%;
+      height: 240px;
+      object-fit: contain;
+      border-radius: 16px;
+      border: 3px solid #a1c4fd;
+      box-shadow: 0 10px 24px rgba(58, 80, 104, 0.15);
+      transition: transform 0.4s ease;
+      margin-bottom: 20px;
+    }
+
+    img:hover {
+      transform: scale(1.02);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px;
+      font-size: 1em;
+      color: #4a6471;
+      font-weight: 600;
+      text-align: left;
+      max-width: 300px;
+      margin-inline: auto;
+    }
+
+    ul li {
+      margin: 8px 0;
+    }
+
+    #result {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      border-left: 5px solid #5f7a8b;
+      text-align: left;
+      font-size: 1em;
+      color: #2c3e50;
+      margin-top: 10px;
+    }
+
+    .highlight {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.4em;
+      margin-top: 18px;
+      background: linear-gradient(to right, #5b83c5, #8ba9d5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      text-align: center;
+    }
+
+    footer {
+      width: 100%;
+      background: #f9fbfd;
+      padding: 14px 0;
+      font-size: 0.9em;
+      color: #6b7a8f;
+      text-align: center;
+      box-shadow: 0 -1px 8px rgba(0,0,0,0.04);
+      margin-top: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Kursi Identifier</h1>
+  </header>
+
+  <section class="tagline-container">
+      <p><strong>Upload an image</strong> of a plastic object (black, transparent, or colorful). The system will identify its type and assign it to the correct conveyor belt:</p>
+
+    <label class="file-btn">📁 Choose Picture
+      <input type="file" id="imageInput" accept="image/*" />
+    </label>
+  </section>
+
+  <section class="result-container" id="resultContainer">
+    <h2>Analysis Result</h2>
+    <img id="preview" alt="Preview Image" />
+    <ul>
+      <li> Black → Conveyor Belt A</li>
+      <li> Transparent → Conveyor Belt B</li>
+      <li> Colorful → Conveyor Belt C</li>
+    </ul>
+    <div id="result"></div>
+  </section>
+
+  <footer>
+    © 2025 Kursi Recycling — Turning Waste into Worth
+  </footer>
+
+  <script>
+    const input = document.getElementById("imageInput");
+    const preview = document.getElementById("preview");
+    const resultContainer = document.getElementById("resultContainer");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const result = document.getElementById("result");
+
+    input.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+          preview.src = e.target.result;
+          preview.style.display = "block";
+
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          analyzeImage();
+          resultContainer.style.display = "block";
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function analyzeImage() {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      let rTotal = 0, gTotal = 0, bTotal = 0, brightnessTotal = 0;
+      const pixelCount = data.length / 4;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+        rTotal += r;
+        gTotal += g;
+        bTotal += b;
+        brightnessTotal += brightness;
+      }
+
+      const avgR = rTotal / pixelCount;
+      const avgG = gTotal / pixelCount;
+      const avgB = bTotal / pixelCount;
+      const avgBrightness = brightnessTotal / pixelCount;
+
+      const belt = assignBelt(avgR, avgG, avgB, avgBrightness);
+
+      result.innerHTML = `
+        <p> <strong>Average Brightness:</strong> ${avgBrightness.toFixed(2)}</p>
+        <p> <strong>Average Color:</strong> R=${Math.round(avgR)}, G=${Math.round(avgG)}, B=${Math.round(avgB)}</p>
+        <span class="highlight">✅ Conveyor Belt ${belt}</span>
+      `;
+    }
+
+    function assignBelt(r, g, b, brightness) {
+      if (brightness > 180) {
+        return "B (Transparent)";
+      } else if (r < 50 && g < 50 && b < 50) {
+        return "A (Black)";
+      } else {
+        return "C (Colorful)";
+      }
+    }
+  </script>
+</body>
+</html>
