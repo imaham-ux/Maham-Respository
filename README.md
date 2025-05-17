@@ -4,11 +4,17 @@ Built with HTML, CSS, and JavaScript (Canvas API), it offers a simple, client-si
  How It Works:
  
  1.Image Upload: Users upload an image of a plastic object.
+ 
  2.Image Analysis: The system calculates the average RGB values and brightness using the Canvas API.
+ 
 3.Classification:
+
  Black Plastic: Assigned to Conveyor Belt A
+ 
  Transparent Plastic: Assigned to Conveyor Belt B
+ 
 Colorful Plastic: Assigned to Conveyor Belt C
+
 4.Result Display: The analysis results, including average color values and assigned conveyor belt, are displayed to the user.
 
 Use Visual Studio to run this file.
