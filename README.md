@@ -2,6 +2,7 @@ Kursi Object Identifier is a web-based tool that classifies plastic objects into
 Built with HTML, CSS, and JavaScript (Canvas API), it offers a simple, client-side image processing demo for waste management concepts
 
  How It Works:
+ 
  1.Image Upload: Users upload an image of a plastic object.
  2.Image Analysis: The system calculates the average RGB values and brightness using the Canvas API.
 3.Classification:
